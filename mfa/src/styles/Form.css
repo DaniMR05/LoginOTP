@@ -1,10 +1,239 @@
-body { font-family: system-ui, Arial; background: #f6f7fb; margin:0; }
-.form-container { max-width: 420px; margin: 40px auto; background: #fff; padding: 20px;
-  border-radius: 12px; border:1px solid #e5e7eb; box-shadow: 0 10px 30px -12px rgba(0,0,0,.15); }
-.form { display: grid; gap: 10px; }
-input { padding: 10px 12px; border:1px solid #d1d5db; border-radius: 10px; }
-button { padding: 10px 12px; border:0; border-radius: 10px; background:#4f46e5; color:#fff; font-weight:700; cursor:pointer; }
-button:hover { filter:brightness(1.05); }
-.link { color:#4f46e5; text-decoration: none; }
-.small-text { font-size: .9rem; color: #64748b; }
-.msg-error { color: #dc2626; font-size: .9rem; }
+/* ===========================
+   Diseño base + Tema (auto)
+   =========================== */
+:root{
+  --bg: #f6f7fb;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --primary: #4f46e5;
+  --primary-2: #4338ca;
+  --danger: #dc2626;
+  --ring: rgba(79,70,229,.35);
+  --border: #e5e7eb;
+  --shadow: 0 20px 40px -22px rgba(2,6,23,.25);
+}
+
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg: #0b1220;
+    --card: #0f172a;
+    --text: #e5e7eb;
+    --muted: #94a3b8;
+    --primary: #7c87ff;
+    --primary-2: #6270ff;
+    --danger: #ff6b6b;
+    --ring: rgba(124,135,255,.35);
+    --border: #1f2a44;
+    --shadow: 0 20px 40px -22px rgba(0,0,0,.55);
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: radial-gradient(1200px 800px at 20% -10%, rgba(79,70,229,.08), transparent 60%),
+              radial-gradient(1000px 700px at 120% 110%, rgba(124,135,255,.08), transparent 60%),
+              var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===========================
+   Contenedor de formularios
+   =========================== */
+.form-container{
+  width: min(92vw, 420px);
+  margin: clamp(24px, 6vh, 64px) auto;
+  background: linear-gradient(180deg, var(--card), color-mix(in srgb, var(--card) 94%, transparent));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px 22px 24px;
+  box-shadow: var(--shadow);
+  animation: pop .25s ease-out;
+}
+
+@keyframes pop{
+  from{ transform: translateY(6px); opacity: .0; }
+  to{ transform: translateY(0); opacity: 1; }
+}
+
+/* Títulos y textos */
+.form-container h2{
+  margin: 0 0 10px;
+  letter-spacing: .2px;
+}
+.small-text{
+  margin-top: 8px;
+  font-size: .9rem;
+  color: var(--muted);
+}
+
+/* Enlaces */
+.link{
+  color: var(--primary);
+  text-underline-offset: 2px;
+  text-decoration: none;
+  font-weight: 600;
+}
+.link:hover{ text-decoration: underline; }
+
+/* ===========================
+   Formulario
+   =========================== */
+.form{
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+label.label{
+  font-size: .9rem;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+
+/* Inputs */
+input{
+  width: 100%;
+  padding: 12px 13px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--card) 96%, transparent);
+  color: var(--text);
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+
+input::placeholder{
+  color: color-mix(in srgb, var(--muted) 70%, transparent);
+}
+
+/* Estados accesibles */
+input:focus{
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--ring);
+  background: color-mix(in srgb, var(--card) 98%, transparent);
+}
+
+input[aria-invalid="true"]{
+  border-color: var(--danger);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--danger) 35%, transparent);
+}
+
+/* Botones */
+button{
+  cursor: pointer;
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-weight: 700;
+  letter-spacing: .2px;
+  transition: transform .04s ease, filter .15s ease, box-shadow .15s ease;
+}
+
+button:active{ transform: translateY(1px); }
+
+/* Primario */
+button[type="submit"], .btn-primary{
+  background: linear-gradient(180deg, var(--primary), var(--primary-2));
+  color: #fff;
+  box-shadow: 0 10px 22px -12px color-mix(in srgb, var(--primary) 65%, transparent);
+}
+button[type="submit"]:hover, .btn-primary:hover{
+  filter: brightness(1.04);
+}
+
+/* Botón texto-link (para “Reenviar código”) */
+button.link{
+  background: transparent;
+  color: var(--primary);
+  padding: 0;
+  border-radius: 8px;
+}
+button.link:hover{ text-decoration: underline; }
+
+/* Deshabilitado */
+button:disabled{
+  opacity: .6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Errores y mensajes */
+.msg-error{
+  margin: 4px 0 0;
+  color: var(--danger);
+  font-size: .92rem;
+}
+
+/* ===========================
+   Layouts de Auth (opcional)
+   =========================== */
+.auth-screen{
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+}
+
+/* Tarjeta versátil (si la usas en otras vistas) */
+.card{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+.card-header{
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Sello/Logo simple (si lo usas) */
+.logo-badge{
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: grid; place-items: center;
+  margin: 0 auto 8px;
+  background: color-mix(in srgb, var(--primary) 12%, var(--card));
+  color: var(--primary);
+  font-weight: 800;
+}
+
+/* ===========================
+   OTP (si lo usas en inputs separados)
+   =========================== */
+.otp-grid{
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin: 6px 0 10px;
+}
+.otp-input{
+  text-align: center;
+  font-size: 1.2rem;
+  letter-spacing: .5px;
+}
+
+/* ===========================
+   Helpers
+   =========================== */
+.mt-2{ margin-top: 8px; }
+.mt-3{ margin-top: 12px; }
+.center{ text-align: center; }
+.muted{ color: var(--muted); }
+
+/* ===========================
+   Scrollbar (sutil)
+   =========================== */
+*{
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--muted) 25%, transparent) transparent;
+}
+::-webkit-scrollbar{ height: 8px; width: 8px; }
+::-webkit-scrollbar-thumb{ background: color-mix(in srgb, var(--muted) 30%, transparent); border-radius: 999px; }
+::-webkit-scrollbar-track{ background: transparent; }
